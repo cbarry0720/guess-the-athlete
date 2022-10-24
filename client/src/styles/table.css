@@ -1,0 +1,99 @@
+table {
+    border-collapse: collapse;
+    font-size: 1em;
+  }
+table td {
+  padding-right: 1em;
+}
+/* The basic stats table. */
+.stats_table {
+  border-collapse: collapse;
+  border: #747678 solid 1px;
+  font-size: .875em;
+  margin-bottom: 1em;
+  /* assorted other things */
+
+  /* For tables inside a stats_table */
+
+}
+.stats_table th,  .stats_table td {
+  border-width: 1px;
+  border-color: #aaaaaa;
+  padding: 3px;
+  vertical-align: inherit;
+}
+.stats_table th *,  .stats_table td * {
+  vertical-align: inherit;
+}
+.stats_table th {
+  background-color: #dadcde;
+  border-style: solid;
+  color:black!important;
+  opacity: initial;
+}
+.stats_table td {
+  border-style: dotted;
+  white-space: nowrap!important;
+}
+.stats_table td.wrap {
+  white-space: normal;
+}
+.stats_table td.double_border {
+  border-left: 4px solid #747678;
+}
+.stats_table tr:last-child > td,  .stats_table th {
+  border-bottom: #747678 solid 1px;
+}
+.stats_table tr:first-child > td,  .stats_table th {
+  border-top: #747678 solid 1px;
+}
+.stats_table tr {
+  vertical-align: top;
+}
+.stats_table tr td:first-child,  .stats_table tr th:first-child {
+  border-left: #747678 solid 1px;
+}
+.stats_table tr td:last-child,  .stats_table tr th:last-child {
+  border-right: #747678 solid 1px;
+}
+.stats_table tr.vmiddle {
+  vertical-align: baseline;
+}
+.stats_table .normal_text {
+  font-size: 1em!important;
+  /* 12 px */
+}
+.stats_table .normal_text th,  .stats_table .normal_text td {
+  padding: 4px!important;
+}
+.stats_table table td {
+  border: 0!important;
+  padding: 2px!important;
+}
+.stats_table form {
+  margin: 0;
+  padding: 0;
+}
+.stats_table select,  .stats_table input {
+  font-size: .8175em!important;
+}
+.sortable .sort_col {
+  background-color: #ffffaa;
+  border: solid 2px #747678;
+}
+.blank_table, .spacer {
+  background-color: #dadcde;
+  height: 0;
+  padding: 0;
+}
+.partial_table,  .partial_table a {
+  color: #414345;
+  text-decoration: none;
+}
+.stat_average,  .stat_total {
+  background-color: #dadcde;
+  font-weight: 700;
+}
+.left { text-align: left; float:none!important;}
+.right { text-align: right; float:none!important; }
+.center { text-align: center; float:none!important; }

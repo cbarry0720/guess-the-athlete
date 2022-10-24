@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model USERS {
+  email    String   @id
+  password String?
+  username String?
+  attempts BigInt[]
+}
+
+model nba_players {
+  athlete_id BigInt @id
+  mvps       Int?
+  allstars   Int?
+  per        Float? @db.Real
+  ws         Float? @db.Real
+}
+
+model ATHLETES {
+  id     BigInt   @id @default(autoincrement())
+  name   String?
+  link   String?
+  league String?
+  image  String?
+  from   Int?
+  to     Int?
+  active Boolean?
+  hof    Boolean?
+}
+
+model attempt {
+  id          BigInt    @id
+  athlete_ids BigInt[]
+  correct     Boolean[]
+}
+
+model mlb_players {
+  athlete_id BigInt  @id
+  war        Float?  @db.Real
+  allstars   Int?
+  cyyoungs   Int?
+  mvps       Int?
+  ggs        Int?
+  ss         Int?
+  position   String?
+}
+
+model nfl_players {
+  athlete_id BigInt  @id
+  av         Float?  @db.Real
+  probowls   Int?
+  position   String?
+}
+
+model athletes_joined_mlb_players {
+  id         BigInt   @id
+  name       String?
+  link       String?
+  league     String?
+  image      String?
+  from       Int?
+  to         Int?
+  active     Boolean?
+  hof        Boolean?
+  athlete_id BigInt
+  war        Float?   @db.Real
+  allstars   Int?
+  cyyoungs   Int?
+  mvps       Int?
+  ggs        Int?
+  ss         Int?
+  position   String?
+}
+
+model athletes_joined_nba_players {
+  athlete_id BigInt   @id
+  mvps       Int?
+  allstars   Int?
+  per        Float?   @db.Real
+  ws         Float?   @db.Real
+  id         BigInt
+  name       String?
+  link       String?
+  league     String?
+  image      String?
+  from       Int?
+  to         Int?
+  active     Boolean?
+  hof        Boolean?
+}
