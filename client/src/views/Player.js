@@ -8,7 +8,7 @@ function Player() {
 	const location = useLocation();
 	const [player, setPlayer] = useState({});
 	const [table, setTable] = useState("");
-	const [searched, setSearched] = useState({ athletes: [] });
+	const [searched, setSearched] = useState([]);
 	const [correct, setCorrect] = useState(null);
 	const [tries, setTries] = useState(3);
 	const where = location.state == null ? {} : location.state.where;
@@ -18,7 +18,7 @@ function Player() {
 	const inputChange = (e) => {
 		const name = e.target.value;
 		if (name.length < 3) {
-			setSearched({ athletes: [] });
+			setSearched([]);
 			return;
 		}
 		console.log(name);
@@ -30,35 +30,36 @@ function Player() {
 				},
 			})
 			.then((res) => {
-				setSearched(res.data);
+				setSearched([]);
+				setSearched(res.data.athletes);
+				console.log(res.data.athletes);
 			});
 	};
 
 	const click = (id) => {
 		return () => {
-			setCorrect(id === player.athlete.id);
+			setCorrect(id === player.id);
 			if (!correct && tries > 0) {
 				setTries(tries - 1);
 			}
-			setSearched({ athletes: [] });
+			setSearched([]);
 		};
 	};
 
 	useEffect(() => {
+		console.log(where);
 		axios
-			.get("http://localhost:4000/players/random", {
-				params: {
-					where,
-					league,
-					modern,
-				},
+			.post("http://localhost:4000/players/random", {
+				where,
+				league,
+				modern,
 			})
 			.then((x) => {
 				let json = x.data;
 				setPlayer(json);
 				console.log(json);
-				const link = json.athlete.link;
-				const position = json.data.position;
+				const link = json.link;
+				const position = json.position;
 				axios
 					.get(
 						`http://localhost:4000/players/table?position=${position}&link=${link}`
@@ -92,9 +93,9 @@ function Player() {
 						<img
 							className="player-icon"
 							alt="player-name"
-							src={player.athlete.image}
+							src={player.image}
 						></img>
-						<h2>{player.athlete ? player.athlete.name : ""}</h2>
+						<h2>{player.name}</h2>
 						<button
 							onClick={() => {
 								window.location.reload();
@@ -128,7 +129,7 @@ function Player() {
 				<input className="input" onChange={inputChange} />
 			</div>
 			<div className="results-container">
-				{searched.athletes.map((x) => {
+				{searched.map((x) => {
 					return (
 						<div
 							onClick={click(x.id)}

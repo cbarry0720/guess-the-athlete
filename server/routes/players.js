@@ -62,10 +62,11 @@ router.get("/update", async function (req, res) {
 	}
 });
 
-router.get("/random", async function (req, res) {
-	const where = req.query.where ? JSON.parse(req.query.where) : {};
-	if (req.query.modern) {
-		if (req.query.league == "MLB") {
+router.post("/random", async function (req, res) {
+	const where = req.body.where || {};
+	console.log(where);
+	if (req.body.modern) {
+		if (req.body.league == "MLB") {
 			Object.assign(where, {
 				from: {
 					gte: 1970,
@@ -102,72 +103,44 @@ router.get("/random", async function (req, res) {
 				ss: player.ss,
 				position: player.position,
 			};
-			res.json({ athlete, data });
+			res.json(Object.assign(athlete, data));
 			return;
 		}
 	}
-	if (req.query.league == undefined || req.query.league == null) {
-		let size = await prisma.aTHLETES.count({ where: where });
+	let data = {};
+	if (req.body.league == undefined) {
+	} else if (req.body.league == "NBA") {
+		let size = await prisma.athletes_joined_nba_players.count({
+			where: where,
+		});
 		let random = Math.floor(Math.random() * size);
-		let athlete = await prisma.aTHLETES.findFirst({
+		data = await prisma.athletes_joined_nba_players.findFirst({
 			skip: random,
 			take: 1,
 			where: where,
 		});
-		const league = athlete.league;
-		const id = athlete.id;
-		let data = {};
-		if (league == "NBA") {
-			data = await prisma.nba_players.findFirst({
-				where: { athlete_id: { equals: id } },
-			});
-		} else if (league == "MLB") {
-			data = await prisma.mlb_players.findFirst({
-				where: { athlete_id: { equals: id } },
-			});
-		} else {
-			data = await prisma.nfl_players.findFirst({
-				where: { athlete_id: { equals: id } },
-			});
-		}
-		athlete.id = Number(athlete.id);
-		data.athlete_id = Number(data.athlete_id);
-
-		res.json({ athlete, data });
-	} else {
-		let data = {};
-		if (req.query.league == "NBA") {
-			let size = await prisma.nba_players.count({ where: where });
-			let random = Math.floor(Math.random() * size);
-			data = await prisma.nba_players.findFirst({
-				skip: random,
-				take: 1,
-				where: where,
-			});
-		} else if (req.query.league == "MLB") {
-			let size = await prisma.mlb_players.count({ where: where });
-			let random = Math.floor(Math.random() * size);
-			data = await prisma.mlb_players.findFirst({
-				skip: random,
-				take: 1,
-				where: where,
-			});
-		} else {
-			let size = await prisma.nfl_players.count({ where: where });
-			let random = Math.floor(Math.random() * size);
-			data = await prisma.nfl_players.findFirst({
-				skip: random,
-				take: 1,
-				where: where,
-			});
-		}
-		const athlete = await prisma.aTHLETES.findFirst({
-			where: { id: { equals: data.athlete_id } },
+	} else if (req.body.league == "MLB") {
+		let size = await prisma.athletes_joined_mlb_players.count({
+			where: where,
 		});
-		athlete.id = Number(athlete.id);
-		data.athlete_id = Number(data.athlete_id);
-		res.json({ athlete: athlete, data: data });
+		let random = Math.floor(Math.random() * size);
+		data = await prisma.athletes_joined_mlb_players.findFirst({
+			skip: random,
+			take: 1,
+			where: where,
+		});
+	} else {
+		let size = await prisma.nfl_players.count({ where: where });
+		let random = Math.floor(Math.random() * size);
+		data = await prisma.nfl_players.findFirst({
+			skip: random,
+			take: 1,
+			where: where,
+		});
 	}
+	data.id = Number(data.id);
+	data.athlete_id = Number(data.athlete_id);
+	res.json(data);
 });
 
 router.get("/search", async function (req, res) {
@@ -178,7 +151,7 @@ router.get("/search", async function (req, res) {
 		return;
 	}
 	if (name.length < 3) {
-		res.status(200).json({ athletes: [] });
+		res.status(200).json({});
 		return;
 	}
 	let data = {};

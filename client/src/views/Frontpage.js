@@ -60,8 +60,8 @@ function Frontpage() {
 							to="/player"
 							state={{
 								where: {
-									from: { equals: dates.all.from },
-									to: { equals: dates.all.to },
+									from: { gte: parseInt(dates.all.from) },
+									to: { lte: parseInt(dates.all.to) },
 								},
 							}}
 						>
@@ -138,9 +138,10 @@ function Frontpage() {
 							to="/player"
 							state={{
 								where: {
-									from: { equals: dates.nba.from },
-									to: { equals: dates.nba.to },
+									from: { gte: parseInt(dates.nba.from) },
+									to: { lte: parseInt(dates.nba.to) },
 								},
+								league: "NBA",
 							}}
 						>
 							Go
@@ -227,9 +228,10 @@ function Frontpage() {
 							to="/player"
 							state={{
 								where: {
-									from: { equals: dates.mlb.from },
-									to: { equals: dates.mlb.to },
+									from: { gte: parseInt(dates.mlb.from) },
+									to: { lte: parseInt(dates.mlb.to) },
 								},
+								league: "MLB",
 							}}
 						>
 							Go
@@ -305,9 +307,10 @@ function Frontpage() {
 							to="/player"
 							state={{
 								where: {
-									from: { equals: dates.nfl.from },
-									to: { equals: dates.nfl.to },
+									from: { gte: parseInt(dates.nfl.from) },
+									to: { lte: parseInt(dates.nfl.to) },
 								},
+								league: "NFL",
 							}}
 						>
 							Go
