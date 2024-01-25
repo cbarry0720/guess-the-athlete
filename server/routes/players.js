@@ -144,7 +144,6 @@ router.post("/random", async function (req, res) {
 });
 
 router.get("/search", async function (req, res) {
-	const league = req.query.league;
 	const name = req.query.name;
 	if (name == undefined || name == null) {
 		res.status(400).send("ERROR: Name not provided");
@@ -154,18 +153,29 @@ router.get("/search", async function (req, res) {
 		res.status(200).json({});
 		return;
 	}
-	let data = {};
 	const athletes = await prisma.aTHLETES.findMany({
 		where: {
 			name: { contains: name, mode: "insensitive" },
-			league: { equals: league },
 		},
-		take: 5,
+		take: 10,
 	});
 	for (let i = 0; i < athletes.length; ++i) {
 		athletes[i].id = Number(athletes[i].id);
 	}
-	res.json({ athletes });
+	let unique = [];
+	for (let i = 0; i < athletes.length; i++) {
+		let athlete = athletes[i];
+		let found = false;
+		for (let j = 0; j < unique.length; j++) {
+			if (unique[j].id == athlete.id) {
+				found = true;
+			}
+		}
+		if (!found) {
+			unique.push(athlete);
+		}
+	}
+	res.json({ athletes: unique });
 });
 
 module.exports = router;

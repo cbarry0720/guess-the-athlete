@@ -4,6 +4,7 @@ import Player from "./views/Player";
 import Results from "./views/Results";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FrontpageModern from "./views/FrontpageModern";
 
 function App() {
 	return (

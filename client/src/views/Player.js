@@ -21,7 +21,6 @@ function Player() {
 			setSearched([]);
 			return;
 		}
-		console.log(name);
 		axios
 			.get(`http://localhost:4000/players/search`, {
 				params: {
@@ -32,7 +31,6 @@ function Player() {
 			.then((res) => {
 				setSearched([]);
 				setSearched(res.data.athletes);
-				console.log(res.data.athletes);
 			});
 	};
 
@@ -46,8 +44,7 @@ function Player() {
 		};
 	};
 
-	useEffect(() => {
-		console.log(where);
+	const getNewPlayer = () => {
 		axios
 			.post("http://localhost:4000/players/random", {
 				where,
@@ -57,7 +54,6 @@ function Player() {
 			.then((x) => {
 				let json = x.data;
 				setPlayer(json);
-				console.log(json);
 				const link = json.link;
 				const position = json.position;
 				axios
@@ -71,7 +67,8 @@ function Player() {
 			.catch((e) => {
 				console.error(e);
 			});
-	}, []);
+	};
+	useEffect(getNewPlayer, []);
 
 	return (
 		<div className="player-container">
@@ -89,7 +86,7 @@ function Player() {
 					<></>
 				)}
 				{correct || tries === 0 ? (
-					<div>
+					<div className="player-info-left">
 						<img
 							className="player-icon"
 							alt="player-name"
@@ -98,7 +95,11 @@ function Player() {
 						<h2>{player.name}</h2>
 						<button
 							onClick={() => {
-								window.location.reload();
+								setTries(3);
+								setCorrect(null);
+								setSearched([]);
+								setTable("");
+								getNewPlayer();
 							}}
 						>
 							Try Again
@@ -122,26 +123,27 @@ function Player() {
 				) : (
 					<></>
 				)}
+				<div className="search-container">
+					<div className="input-div">
+						<input className="input" onChange={inputChange} />
+					</div>
+					<div className="results-container">
+						{searched.map((x) => {
+							return (
+								<div
+									onClick={click(x.id)}
+									key={x.id}
+									className="result"
+								>
+									<img alt={x.name} src={x.image}></img>
+									<p>{x.name}</p>
+								</div>
+							);
+						})}
+					</div>
+				</div>
 			</div>
 			<div dangerouslySetInnerHTML={{ __html: table }}></div>
-
-			<div className="input-div">
-				<input className="input" onChange={inputChange} />
-			</div>
-			<div className="results-container">
-				{searched.map((x) => {
-					return (
-						<div
-							onClick={click(x.id)}
-							key={x.id}
-							className="result"
-						>
-							<img alt={x.name} src={x.image}></img>
-							<p>{x.name}</p>
-						</div>
-					);
-				})}
-			</div>
 		</div>
 	);
 }

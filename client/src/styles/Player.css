@@ -1,46 +1,74 @@
+.player-info{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.player-info-left{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.input-div{
+    width: 100%;
+    text-align: center;
+}
 input{
-    width: 80%;
-    height: 100%;
+    width: 100%;
+    height: 2em;
     border-color: black;
     border-width: 1;
     background-color: transparent;
     color: black;
     font-size: 1.5em;
 }
-.input-div{
-    text-align: center;
-}
-
 .results-container{
-    width: 100%;
-    height: 100%;
+    top: 3.5em;
+    width: 50%;
+    height: 50%;
     display: flex;
     flex-direction: column;
+    position: absolute;
+}
+.results-container > div{
+    background-color: white;
 }
 .result{
     cursor: pointer;
     display: flex;
     flex-direction: row;
-    padding-left: 125px;
+    justify-content: center;
+    align-content: space-between;
+    background-color: white;
 }
 .result > img{
-    width: 75px;
-    margin: 5px;
+    width: 50px;
 }
 .result > p{
     margin: 5px;
-    font-size: 1.5em;
+    font-size: 1.25em;
     align-self: center;
 }
 .result:hover{
     background-color: #e6e6e6;
 }
 .icon{
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
+    margin: 10px;
     align-self: center;
 }
-.player-info, .player-info > div{
+.search-container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    width: 50%;
+}
+button{
+    height: 3em;
+    align-self: center;
+}
+h2{
+    margin: 20px;
 }

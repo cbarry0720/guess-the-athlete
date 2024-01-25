@@ -9,10 +9,9 @@ function Frontpage() {
 		nfl: { from: "1920", to: "2022" },
 		mlb: { from: "1871", to: "2022" },
 	});
-
 	return (
 		<div id="main-container">
-			<div id="top-container">
+			{/* <div id="top-container">
 				<h2>All Leagues</h2>
 				<div className="content-container">
 					<div className="links-container">
@@ -40,8 +39,9 @@ function Frontpage() {
 							className="input-from"
 							defaultValue={dates.all.from}
 							onChange={(e) => {
-								let temp = dates;
-								temp.all.from = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.all.from = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -50,8 +50,9 @@ function Frontpage() {
 							className="input-to"
 							defaultValue={dates.all.to}
 							onChange={(e) => {
-								let temp = dates;
-								temp.all.to = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.all.to = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -69,7 +70,7 @@ function Frontpage() {
 						</Link>
 					</div>
 				</div>
-			</div>
+			</div> */}
 			<div className="league-container">
 				<h2>NBA</h2>
 				<div className="content-container">
@@ -118,8 +119,9 @@ function Frontpage() {
 							className="input-from"
 							defaultValue={dates.nba.from}
 							onChange={(e) => {
-								let temp = dates;
-								temp.nba.from = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.nba.from = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -128,8 +130,9 @@ function Frontpage() {
 							className="input-to"
 							defaultValue={dates.nba.to}
 							onChange={(e) => {
-								let temp = dates;
-								temp.nba.to = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.nba.to = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -208,8 +211,9 @@ function Frontpage() {
 							className="input-from"
 							defaultValue={dates.mlb.from}
 							onChange={(e) => {
-								let temp = dates;
-								temp.mlb.from = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.mlb.from = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -218,8 +222,9 @@ function Frontpage() {
 							className="input-to"
 							defaultValue={dates.mlb.to}
 							onChange={(e) => {
-								let temp = dates;
-								temp.mlb.to = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.mlb.to = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -239,7 +244,7 @@ function Frontpage() {
 					</div>
 				</div>
 			</div>
-			<div className="league-container">
+			{/* <div className="league-container">
 				<h2>NFL</h2>
 				<div className="content-container">
 					<div className="links-container">
@@ -287,8 +292,9 @@ function Frontpage() {
 							className="input-from"
 							defaultValue={dates.nfl.from}
 							onChange={(e) => {
-								let temp = dates;
-								temp.nfl.from = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.nfl.from = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -297,8 +303,9 @@ function Frontpage() {
 							className="input-to"
 							defaultValue={dates.nfl.to}
 							onChange={(e) => {
-								let temp = dates;
-								temp.nfl.to = e;
+								e.preventDefault();
+								let temp = Object.assign({}, dates);
+								temp.nfl.to = e.target.value;
 								setDates(temp);
 							}}
 						></input>
@@ -317,7 +324,7 @@ function Frontpage() {
 						</Link>
 					</div>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }
