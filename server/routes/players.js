@@ -1,9 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { spawn, exec } = require("child_process");
+const { spawn } = require("child_process");
 const cors = require("cors");
 const express = require("express");
 const router = express.Router();
+const cheerio = require("cheerio");
+const axios = require("axios");
 const fs = require("fs");
 
 router.use(
@@ -16,36 +18,58 @@ router.use(
 router.get("/table", async function (req, res) {
 	const link = req.query.link;
 	const position = req.query.position;
-	const split = link.split("/");
-	var formattedLink = "https://widgets.sports-reference.com/wg.fcgi?css=1";
+
+	const html = await axios.get(link).then((res) => res.data);
+
+	const $ = cheerio.load(html);
+
+	let table = "";
 	if (link.includes("basketball")) {
-		formattedLink += "&site=bbr&div=div_per_game&url=";
-		for (let i = 3; i < split.length; ++i) {
-			formattedLink += "%2F";
-			formattedLink += split[i];
-		}
+		table = $("#per_game").html();
 	} else if (link.includes("baseball")) {
-		formattedLink += "&site=br&url=";
-		for (let i = 3; i < split.length; ++i) {
-			formattedLink += "%2F";
-			formattedLink += split[i];
-		}
-		formattedLink +=
+		table =
 			position == "Pitcher"
-				? "&div=div_pitching_standard"
-				: "&div=div_batting_standard";
+				? $("#pitching_standard").html()
+				: $("#batting_standard").html();
 	} else if (link.includes("football")) {
+		//todo
 	}
-	console.log(formattedLink);
-	var command = spawn("python", [
-		"routes/scraping.py",
-		"table",
-		formattedLink,
-	]);
-	command.on("close", () => {
-		string = fs.readFileSync("html.txt", { encoding: "utf8", flag: "r" });
-		res.status(200).send(string);
-	});
+
+	console.log(link);
+
+	res.status(200).send("<table>" + table + "</table>");
+
+	// const split = link.split("/");
+	// console.log(link);
+	// var formattedLink = "https://widgets.sports-reference.com/wg.fcgi?css=1";
+	// if (link.includes("basketball")) {
+	// 	formattedLink += "&site=bbr&div=div_per_game&url=";
+	// 	for (let i = 3; i < split.length; ++i) {
+	// 		formattedLink += "%2F";
+	// 		formattedLink += split[i];
+	// 	}
+	// } else if (link.includes("baseball")) {
+	// 	formattedLink += "&site=br&url=";
+	// 	for (let i = 3; i < split.length; ++i) {
+	// 		formattedLink += "%2F";
+	// 		formattedLink += split[i];
+	// 	}
+	// 	formattedLink +=
+	// 		position == "Pitcher"
+	// 			? "&div=div_pitching_standard"
+	// 			: "&div=div_batting_standard";
+	// } else if (link.includes("football")) {
+	// }
+	// console.log(formattedLink);
+	// var command = spawn("python", [
+	// 	"routes/scraping.py",
+	// 	"table",
+	// 	formattedLink,
+	// ]);
+	// command.on("close", () => {
+	// 	string = fs.readFileSync("html.txt", { encoding: "utf8", flag: "r" });
+	// 	res.status(200).send(string);
+	// });
 });
 
 router.get("/update", async function (req, res) {
